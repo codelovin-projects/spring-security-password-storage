@@ -78,6 +78,10 @@ public class PasswordStorageDemoApplication {
 		// passwordEncoder: This DelegatingPasswordEncoder instance does not have BCryptPasswordEncoder registered.
 		// Therefore, the below call will throw IllegalArgumentException with the below message:
 		//			- There is no PasswordEncoder mapped for the id "bcrypt"
+		//
+		// To resolve it is to figure out how your passwords are currently being stored and explicitly 
+		// provide the correct PasswordEncoder. Look at Spring's PasswordEncoderFactories class for full
+		// list of currently available PasswordEncoder.
 		boolean isMatched = passwordEncoder.matches(rawPwd, encodedPassword);
 		System.out.println("\n\n Password matched? " + isMatched);
 	}
@@ -88,7 +92,6 @@ public class PasswordStorageDemoApplication {
 		encoders.put("pbkdf2", new Pbkdf2PasswordEncoder());
 		encoders.put("scrypt", new SCryptPasswordEncoder());
 
-		// idForEncode is used to lookup which PasswordEncoder should be used for encoding passwords
 		PasswordEncoder passwordEncoder =
 		    new DelegatingPasswordEncoder("pbkdf2", encoders);
 		
