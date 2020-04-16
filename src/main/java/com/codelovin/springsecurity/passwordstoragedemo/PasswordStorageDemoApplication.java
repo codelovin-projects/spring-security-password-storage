@@ -18,6 +18,10 @@ public class PasswordStorageDemoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PasswordStorageDemoApplication.class, args);
 		
+		checkBCryptedPassword();
+	}
+
+	private static void checkBCryptedPassword() {
 		System.out.println("\n\n");
 		
 		// DelegatingPasswordEncoder >> A password encoder that delegates to another 
@@ -47,9 +51,22 @@ public class PasswordStorageDemoApplication {
 		encodedPwd = passwordEncoder.encode(rawPwd);
 		System.out.println(encodedPwd);
 		
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12); // Strength set as 12
+		encodedPwd = encoder.encode(rawPwd);
+		System.out.println("{bcrypt}" + encodedPwd);
+		
+		// About Brypted password:
+		//
+		// 		{bcrypt}$2a$12$kL.xOsD.70qKj8Nfw6r0RejUOjatlGObIz07dvCbJ2TRsiDNn9BrK
+		// 
+		// 		$2a$  12$   kL.xOsD.70qKj8Nfw6r0Re   jUOjatlGObIz07dvCbJ2TRsiDNn9BrK
+		//
+		//		$2a$ ==> represents version of BCrypt
+		//		12$  ==> represents the cost factor representing number of iterations of the key derivation
+		//		kL.xOsD.70qKj8Nfw6r0Re ==> 22 characters are the salt of the password
+		//		jUOjatlGObIz07dvCbJ2TRsiDNn9BrK ==> 31 characters represent the hashed password itself		
 	}
 	
-
 	private static PasswordEncoder getCustomDelegatingPasswordEncoder() {
 		 
 		String idForEncode = "bcrypt";
